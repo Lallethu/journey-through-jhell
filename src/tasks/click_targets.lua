@@ -96,7 +96,7 @@ function ClickTargets:mousepressed(x, y)
 
       if dx * dx + dy * dy <= r2 then
         settle(self, t, "hit")
-        Events.emit("task_target_hit", t.x, t.y)
+        Events.emit("task_target_hit", t.x, t.y, self.hits)
         return
       end
     end
