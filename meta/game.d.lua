@@ -22,6 +22,7 @@
 ---| "jelly_hit_sixseven"
 ---| "player_attacked"
 ---| "player_healed"
+---| "token_gained"
 ---| "player_hurt"
 ---| "jelly_spawned"
 ---| "sugar_changed"
