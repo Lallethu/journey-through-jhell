@@ -10,20 +10,18 @@ local Interactable    = require("src.world.interactable")
 local Events          = require("src.core.events")
 local HUD             = require("src.ui.hud")
 local FX              = require("src.systems.fx")
-local Profiler        = require("src.core.profiler")
+-- local Profiler     = require("src.core.profiler")
+
+---@type StateMachine
+local stateMachine
 
 ---@class Game
 local Game            = {}
 
-local IS_WEB          = love.system.getOS() == "Web"
-
----@type StateMachine
-local stateMachine
----@type World
-
 local function newRun()
+  ---@type World
   local world = World.new()
-  world.player = world:add(Player.new(Screen.width / 2, Screen.height / 2)) --[[@as Hittable]]
+  world.player = world:add(Player.new(Screen.width / 2, Screen.height / 2)) --[[@as Player]]
 
 
   world:add(Interactable.new("wall", 72, 200))
@@ -56,26 +54,26 @@ function Game.load()
 end
 
 function Game.update(dt)
-  Profiler.beginFrame(dt)
+  -- Profiler.beginFrame(dt)
 
   dt = math.min(dt, 1 / 20) -- cheeky way of capping dt compounding to insane values and break movement/timer/ect...
-  Profiler.beginSection("Game Update")
+  -- Profiler.beginSection("Game Update")
   stateMachine:update(dt)
-  Profiler.endSection("Game Update")
+  -- Profiler.endSection("Game Update")
 
-  Profiler.beginSection("audio")
+  -- Profiler.beginSection("audio")
   AudioSystem.update(dt)
-  Profiler.endSection("audio")
+  -- Profiler.endSection("audio")
 end
 
 function Game.draw()
-  Profiler.beginSection("Game Draw")
+  -- Profiler.beginSection("Game Draw")
   Screen.begin()
   stateMachine:draw()
   Screen.finish()
-  Profiler.endSection("Game Draw")
+  -- Profiler.endSection("Game Draw")
 
-  Profiler.draw()
+  -- Profiler.draw()
 end
 
 ---@param k love.KeyConstant
@@ -83,7 +81,7 @@ end
 function Game.keypressed(k, sc)
   AudioSystem.onUserInput()
   local action = Input.keypressed(k, sc)
-  if action == "toggle_fullscreen" and not IS_WEB then
+  if action == "toggle_fullscreen" then
     love.window.setFullscreen(not love.window.getFullscreen(), "desktop")
   end
   if action then stateMachine:onAction(action) end
