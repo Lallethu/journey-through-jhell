@@ -18,8 +18,10 @@
 
 ---@alias GameEvent
 ---| "jelly_died"
+---| "jelly_hit"
 ---| "player_attacked"
 ---| "player_healed"
+---| "player_hurt"
 ---| "jelly_spawned"
 ---| "sugar_changed"
 ---| "task_done"

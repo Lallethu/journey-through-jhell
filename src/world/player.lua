@@ -73,7 +73,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-  love.graphics.setColor((Hittable.isBlinkedOff(self) and { 0.55, 0.55, 0.60, 0.82 })
+  love.graphics.setColor((Hittable.isBlinkedOff(self) and { 0.99, 0.98, 0.98, 0.95 })
     or playerdata.COLOR)
 
   self.anim:draw(self.x, self.y, self.flip)

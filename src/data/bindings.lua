@@ -12,6 +12,8 @@ local bindings = {
   cancel               = { "x" },
   end_day              = { "return" },
 
+  toggle_fullscreen    = { "f11" },
+
   -- debug_switch_state   = { "return" },
   debug_profiler       = { "f3" },
   debug_reset_profiler = { "f5" },

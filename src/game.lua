@@ -1,4 +1,5 @@
 local Screen          = require("src.core.screen")
+local AudioSystem     = require("src.systems.audio")
 local Input           = require("src.core.input")
 local StateMachine    = require("src.core.statemachine")
 local Player          = require("src.world.player")
@@ -14,6 +15,8 @@ local Profiler        = require("src.core.profiler")
 ---@class Game
 local Game            = {}
 
+local IS_WEB          = love.system.getOS() == "Web"
+
 ---@type StateMachine
 local stateMachine
 ---@type World
@@ -22,10 +25,12 @@ local function newRun()
   local world = World.new()
   world.player = world:add(Player.new(Screen.width / 2, Screen.height / 2)) --[[@as Hittable]]
 
+
   world:add(Interactable.new("wall", 72, 200))
   world:add(Interactable.new("healer", 408, 220))
   world:add(Interactable.new("gatherer", 240, 128))
 
+  AudioSystem.init { world = world }
   SplittingSystem.init(world)
   ResourcesSystem.init(world)
   FX.init()
@@ -44,6 +49,7 @@ end
 
 function Game.load()
   Screen.init()
+  AudioSystem.load()
   HUD.init()
   Events.on("restart_requested", newRun, Game)
   newRun()
@@ -56,6 +62,10 @@ function Game.update(dt)
   Profiler.beginSection("Game Update")
   stateMachine:update(dt)
   Profiler.endSection("Game Update")
+
+  Profiler.beginSection("audio")
+  AudioSystem.update(dt)
+  Profiler.endSection("audio")
 end
 
 function Game.draw()
@@ -71,7 +81,11 @@ end
 ---@param k love.KeyConstant
 ---@param sc love.Scancode
 function Game.keypressed(k, sc)
+  AudioSystem.onUserInput()
   local action = Input.keypressed(k, sc)
+  if action == "toggle_fullscreen" and not IS_WEB then
+    love.window.setFullscreen(not love.window.getFullscreen(), "desktop")
+  end
   if action then stateMachine:onAction(action) end
 end
 
@@ -84,8 +98,6 @@ function Game.mousepressed(x, y, button)
   stateMachine:mousepressed(gx, gy, button)
 end
 
-function Game.resize(w, h)
-  Screen.resize(w, h)
-end
+function Game.resize(w, h) Screen.resize(w, h) end
 
 return Game
