@@ -20,6 +20,8 @@ local MISS = { 1.0, 0.35, 0.35 }
 local ClickTargets = {}
 ClickTargets.__index = ClickTargets
 
+local font = love.graphics.newFont("assets/fonts/cute-dino.ttf", 14, "mono")
+
 ---@param config table Must be a minigame from data/tasks.lua
 ---@param onFinish fun(success: boolean)
 ---@return ClickTargets
@@ -106,13 +108,14 @@ end
 function ClickTargets:draw()
   local r = self.config.radius
   Screen.fill(DIM)
+  love.graphics.push("all")
+  love.graphics.setFont(font)
 
   for i = 1, #self.targets do
     local t = self.targets[i]
 
     if t.state == "live" then
       local left = 1 - t.age / self.config.lifetime
-
       love.graphics.setColor(LIVE)
       love.graphics.circle("fill", t.x, t.y, r)
       love.graphics.setColor(1, 1, 1, 0.8)
@@ -128,6 +131,7 @@ function ClickTargets:draw()
 
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.printf(self.hits .. " / " .. self.config.need, 0, 38, Screen.width, "center")
+  love.graphics.pop()
 end
 
 return ClickTargets
