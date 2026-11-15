@@ -52,6 +52,7 @@ function Jelly:takeHit(damage, sourceX, sourceY)
     Events.emit("jelly_died", self)
   end
 
+  Events.emit("jelly_hit", self)
   self.anim:play("hurt", false)
   return accepted
 end
@@ -61,7 +62,7 @@ function Jelly:update(dt)
   if self.anim.done then self.anim:play("chasing") end
   self.anim:update(dt) -- always runs, even after the player dies
 
-  local target = self.world.player
+  local target = self.world.player --[[@as Player]]
   if not target or target.dead then return end
 
   local dx, dy = target.x - self.x, target.y - self.y
@@ -73,6 +74,9 @@ function Jelly:update(dt)
   local reach = self.radius + playerdata.HURT_RADIUS
   if d2 < reach * reach then
     if target:takeHit(self.damage, self.x, self.y) then
+      Events.emit("player_hurt")
+      target.anim:play("hurt")
+
       self.anim:play("swing", false)
     end
   end
