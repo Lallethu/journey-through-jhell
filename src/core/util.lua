@@ -26,4 +26,8 @@ function Util.mixColor(a, b, t, out)
   return out
 end
 
+function Util.easeOutCubic(t)
+  return 1 - (1 - t) ^ 3
+end
+
 return Util

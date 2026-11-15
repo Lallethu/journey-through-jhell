@@ -66,6 +66,8 @@ local listeners = {}
 ---@field machine StateMachine? reference to the statemachine
 ---@field world World? reference to the world
 ---@field activeTask Task?
+---@field t number? Time variable to use as hearth content
+---@field leaving number? Use case in TitleScreenState (timer)
 ---@field timeLeft number? Time between transitions
 ---@field won boolean? Flag for win/lose
 ---@field enter fun(self: State, ...: any)? Trigger when StateMachine:switch is called
@@ -74,6 +76,8 @@ local listeners = {}
 ---@field draw fun(self: State)?
 ---@field startTask fun(self: State, target: Interactable)?
 ---@field onAction fun(self: State, action: Binding)?
+---@field start fun(self: State)?
+---@field keypressed fun(self: State, k: love.KeyConstant, sc: love.Scancode)?
 ---@field mousepressed fun(self: State, x: number, y: number, button: integer?)?
 
 ---@alias StateList table<string, State>
