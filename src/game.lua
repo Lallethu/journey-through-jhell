@@ -18,7 +18,7 @@ local stateMachine
 ---@class Game
 local Game            = {}
 
-local function newRun()
+local function newRun(first)
   ---@type World
   local world = World.new()
   world.player = world:add(Player.new(Screen.width / 2, Screen.height / 2)) --[[@as Player]]
@@ -36,21 +36,22 @@ local function newRun()
   stateMachine = StateMachine.new {
     world = world,
     states = {
-      day    = require("src.states.day"),
-      dusk   = require("src.states.dusk"),
-      night  = require("src.states.night"),
-      ending = require("src.states.ending"),
+      title_screen = require("src.states.title"),
+      day          = require("src.states.day"),
+      dusk         = require("src.states.dusk"),
+      night        = require("src.states.night"),
+      ending       = require("src.states.ending"),
     },
   }
-  stateMachine:switch("day")
+  stateMachine:switch(first and "title_screen" or "day")
 end
 
 function Game.load()
   Screen.init()
   AudioSystem.load()
   HUD.init()
-  Events.on("restart_requested", newRun, Game)
-  newRun()
+  Events.on("restart_requested", function() newRun(false) end, Game)
+  newRun(true)
 end
 
 function Game.update(dt)
@@ -80,6 +81,8 @@ end
 ---@param sc love.Scancode
 function Game.keypressed(k, sc)
   AudioSystem.onUserInput()
+  stateMachine:keypressed(k, sc)
+
   local action = Input.keypressed(k, sc)
   if action == "toggle_fullscreen" then
     love.window.setFullscreen(not love.window.getFullscreen(), "desktop")
@@ -92,6 +95,7 @@ end
 ---@param button integer
 function Game.mousepressed(x, y, button)
   local gx, gy = Screen.toGameCoordinates(x, y)
+  AudioSystem.onUserInput()
   if gx < 0 or gy < 0 or gx > Screen.width or gy > Screen.height then return end
   stateMachine:mousepressed(gx, gy, button)
 end
