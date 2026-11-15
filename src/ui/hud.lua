@@ -11,7 +11,7 @@ local MARGIN                      = 6
 local SIZE_NAMES                  = { "small", "medium", "big" }
 
 local WHITE                       = { 1, 1, 1, 1 }
-local GREY                        = { 0.6, 0.6, 0.6, 1 }
+local GREY                        = { 0.77, 0.77, 0.77, 1 }
 local RED                         = { 0.9, 0.3, 0.3, 1 }
 local YELLOW                      = { 0.95, 0.85, 0.3, 1 }
 local GREEN                       = { 0.4, 0.9, 0.4, 1 }
@@ -78,9 +78,14 @@ local function status(world)
     love.graphics.rectangle("fill", MARGIN, MARGIN, w * (player.hp / playerdata.MAX_HP), h)
   end
 
-  text("Sugar " .. world.sugar, MARGIN, MARGIN + 10)
+
+  love.graphics.setColor(0.04, 0.3, 0.4, 0.4)
+  love.graphics.rectangle("fill", MARGIN, MARGIN + 12,
+    font:getWidth("Walls " .. (world.stock.wall or 0) .. "  Heals " .. (world.stock.heal or 0)) + 6,
+    38)
+  text("Sugar " .. world.sugar, MARGIN + 3, MARGIN + 15)
   text("Walls " .. (world.stock.wall or 0) .. "  Heals " .. (world.stock.heal or 0),
-    MARGIN, MARGIN + 22)
+    MARGIN + 3, MARGIN + 31)
 end
 
 ---@param world World
@@ -127,7 +132,7 @@ local function timer(timeLeft)
 end
 
 function HUD.init()
-  font = love.graphics.newFont(10, "mono")
+  font = love.graphics.newFont("assets/fonts/cute-dino.ttf", 14, "mono")
 end
 
 ---@param world World
