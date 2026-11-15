@@ -6,6 +6,8 @@ local playeranimations = {
   originY = 16,
   clips = {
     idle  = { frames = { 10, 11, 12, 13 }, durations = { 0.14, 0.14, 0.17, 0.13 }, loop = true },
+    hurt  = { frames = { 14, 15, 16, 17 }, durations = { 0.14, 0.14, 0.14, 0.14 }, loop = false },
+
     swing = {
       frames = { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
       durations = { 0.02, 0.01, 0.04, 0.03, 0.02, 0.04, 0.07, 0.04, 0.05 },
