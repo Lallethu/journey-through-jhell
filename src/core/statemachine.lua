@@ -45,6 +45,10 @@ function StateMachine:onAction(action)
   if self.current and self.current.onAction then self.current:onAction(action) end
 end
 
+function StateMachine:keypressed(k, sc)
+  if self.current and self.current.keypressed then self.current:keypressed(k, sc) end
+end
+
 ---Process mousepress actions
 ---@param x number
 ---@param y number
