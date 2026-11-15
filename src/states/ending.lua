@@ -15,8 +15,8 @@ local EndingState = {}
 
 ---@param won boolean?
 function EndingState:enter(won)
-  titleFont     = titleFont or love.graphics.newFont(20, "mono")
-  bodyFont      = bodyFont or love.graphics.newFont(10, "mono")
+  titleFont     = titleFont or love.graphics.newFont("assets/fonts/cute-dino.ttf", 22, "mono")
+  bodyFont      = bodyFont or love.graphics.newFont("assets/fonts/cute-dino.ttf", 14, "mono")
 
   self.won      = won
   self.timeLeft = 0
@@ -39,6 +39,9 @@ function EndingState:draw()
   love.graphics.setFont(bodyFont)
   love.graphics.printf(string.format("Night %d of %d", self.world.night, #wavesdata.NIGHTS), 0,
     centerY - 6, Screen.width, "center")
+
+  love.graphics.printf("Thanks for playing, enjoy the rest of the jam :)", 0,
+    centerY + 8, Screen.width, "center")
 
   if self.timeLeft > INPUT_DELAY then
     love.graphics.printf("Press Enter to play again", 0, centerY + 24, Screen.width, "center")

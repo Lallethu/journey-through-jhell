@@ -27,7 +27,7 @@ local function newRun()
 
 
   world:add(Interactable.new("wall", 72, 200))
-  world:add(Interactable.new("healer", 408, 220))
+  world:add(Interactable.new("healer", 408, 220, true))
   world:add(Interactable.new("gatherer", 240, 128))
 
   AudioSystem.init { world = world }
