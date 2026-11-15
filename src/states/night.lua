@@ -12,12 +12,13 @@ local HUD         = require("src.ui.hud")
 local Screen      = require("src.core.screen")
 ---@type WaveSpawner
 local WaveSpawner = require("src.systems.wave_spawner")
-local Profiler    = require("src.core.profiler")
 
 local palettes    = require("src.data.palettes")
 local wavesdata   = require("src.data.waves")
 local background  = love.graphics.newImage("assets/gfx/journey-trough-jhell-night-map.png")
 background:setFilter("nearest", "nearest")
+local foreground = love.graphics.newImage("assets/gfx/foreground-jelly-night.png")
+foreground:setFilter("nearest", "nearest")
 
 local keymap     = {
   attack = Commands.attack,
@@ -62,6 +63,7 @@ end
 function NightState:draw()
   Screen.fill(palettes.NIGHT)
   self.world:draw(background)
+  love.graphics.draw(foreground)
   FX.draw()
   HUD.drawNight(self.world)
 end
