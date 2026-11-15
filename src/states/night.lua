@@ -67,9 +67,6 @@ function NightState:draw()
 end
 
 function NightState:onAction(action)
-  -- TODO: remove that later
-  if action == "debug_profiler" then Profiler.toggle() end
-  if action == "debug_reset_profiler" then Profiler.reset() end
   local command = keymap[action]
   if command then command(self.world) end
 end

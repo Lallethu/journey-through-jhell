@@ -85,11 +85,7 @@ function DayState:onAction(action)
     self.machine:switch("dusk")
   end
 
-  -- TODO: remove that later
-  if action == "debug_profiler" then Profiler.toggle() end
-  if action == "debug_reset_profiler" then Profiler.reset() end
-
-  -- the if block shadow this implementation
+  -- the if block shadows this implementation
   -- local command = keymap[action]
   -- if command then command(self.world) end
 end
