@@ -36,7 +36,6 @@ function Interactable:tryUse()
 end
 
 function Interactable:refresh()
-  -- TODO: animation idea
   self.usedToday = false
 end
 
