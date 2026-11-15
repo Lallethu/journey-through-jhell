@@ -54,6 +54,7 @@ end
 local reactions = {
   player_attacked = function() play("swing") end,
   jelly_hit = function(jelly) play("jelly_hit", sizePitch(jelly), jelly) end,
+  jelly_hit_sixseven = function() play("jelly_hit", sizePitch({ size = 1 }), { x = 400, y = 200 }) end,
   jelly_died = function(jelly) play("jelly_pop", sizePitch(jelly), jelly) end,
   player_hurt = function() play("player_hurt") end,
   player_healed = function() play("heal") end,
@@ -147,6 +148,7 @@ function Audio.update(dt)
       bed:setVolume(bedLevel * sounddata.BED.volume * sounddata.BUSES.bed)
 
       if not bed:isPlaying() then bed:play() end
+      if world.player.dead then bed:pause() end
     elseif bed:isPlaying() then
       bed:pause()
     end
