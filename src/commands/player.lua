@@ -69,7 +69,7 @@ function Commands.heal(world)
   if world.stock.heal < 1 then return false end
 
   local healed = math.min(playerdata.BASE_HEAL_AMOUNT, playerdata.MAX_HP - player.hp)
-  if healed <= 0 then return false end -- TODO: add fx full life toast text
+  if healed <= 0 then return false end
 
   player.hp = player.hp + healed
   world.stock.heal = world.stock.heal - 1
