@@ -17,6 +17,7 @@ Theme: **Jelly**.
 | --- | --- | --- |
 | Day | Arrows / WASD | Move |
 | Day | E | Interact |
+| Day | Enter | Skip day time |
 | Night | Space | Attack |
 | Night | Q | Place wall |
 | Night | F | Heal |
@@ -41,7 +42,9 @@ Cartoon creature violence only. No mature content.
 ## Credits
 
 - Code, art, design: Lallethu (me, hehe)
-- Framework: by the amazing people at [Love2D](https://love2d.org/), and [Love2D Github](https://github.com/love2d/love)
+- music: L. Alexandre (aka R C), for the title "Candy passion" OST for the game
+
+see also [CREDITS](CREDITS.md)
 
 ## License
 
