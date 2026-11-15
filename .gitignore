@@ -2,3 +2,4 @@ build/
 *.love
 .DS_Store
 Thumbs.db
+.resources/

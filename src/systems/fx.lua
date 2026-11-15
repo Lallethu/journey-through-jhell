@@ -4,6 +4,7 @@ local Util    = require("src.core.util")
 local LIFE    = 0.9
 local RISE    = 18
 local GREEN   = { 0.4, 1, 0.5, 1 }
+local RED     = { 1, 0.2, 0.25, 1 }
 local WHITE   = { 1, 1, 1, 1 }
 
 local font
@@ -23,12 +24,23 @@ function FX.float(text, x, y, color)
 end
 
 function FX.init()
-  font = font or love.graphics.newFont(10, "mono")
+  font = font or love.graphics.newFont("assets/fonts/cute-dino.ttf", 10, "mono")
   floats = {}
   Events.off_owner(FX)
   Events.on("player_healed", function(amount, x, y)
     FX.float("+" .. amount, x, y, GREEN)
   end, FX)
+  Events.on("sugar_changed", function(amount, additive, player)
+    FX.float((additive and "+" or "-") .. amount .. " sugar", player.x, player.y,
+      additive and GREEN or RED)
+  end)
+  Events.on("token_gained", function(tokenKind, player)
+    FX.float("+1 " .. tokenKind .. " token", player.x, player.y + 16,
+      GREEN)
+  end)
+  Events.on("entity_hurt", function(what, howMuch)
+    FX.float("-" .. howMuch, what.x, what.y - 10, RED)
+  end)
 end
 
 ---@param dt number

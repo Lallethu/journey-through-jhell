@@ -37,7 +37,6 @@ function SplittingSystem.init(p_world)
   world = p_world
   -- unhook the event in case caller is called for a restart
   -- like so if "world" is reset too, the reference does not point to nil
-  -- TODO: make the restart logic in src/game.lua
   Events.off_owner(SplittingSystem)
   Events.on("jelly_died", onJellyDied, SplittingSystem)
 end

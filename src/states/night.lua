@@ -12,19 +12,22 @@ local HUD         = require("src.ui.hud")
 local Screen      = require("src.core.screen")
 ---@type WaveSpawner
 local WaveSpawner = require("src.systems.wave_spawner")
-local Profiler    = require("src.core.profiler")
 
 local palettes    = require("src.data.palettes")
 local wavesdata   = require("src.data.waves")
+local background  = love.graphics.newImage("assets/gfx/journey-trough-jhell-night-map.png")
+background:setFilter("nearest", "nearest")
+local foreground = love.graphics.newImage("assets/gfx/foreground-jelly-night.png")
+foreground:setFilter("nearest", "nearest")
 
-local keymap      = {
+local keymap     = {
   attack = Commands.attack,
   heal = Commands.heal,
   place_wall = Commands.placeWall
 }
 
 ---@type State
-local NightState  = {}
+local NightState = {}
 
 function NightState:enter()
   WaveSpawner.start(self.world, self.world.night)
@@ -45,6 +48,7 @@ end
 
 function NightState:update(dt)
   self.world:update(dt)
+  Commands.replayBuffered(self.world)
   Collision.resolve(dt, self.world)
   FX.update(dt)
 
@@ -58,15 +62,13 @@ end
 
 function NightState:draw()
   Screen.fill(palettes.NIGHT)
-  self.world:draw()
+  self.world:draw(background)
+  love.graphics.draw(foreground)
   FX.draw()
   HUD.drawNight(self.world)
 end
 
 function NightState:onAction(action)
-  -- TODO: remove that later
-  if action == "debug_profiler" then Profiler.toggle() end
-  if action == "debug_reset_profiler" then Profiler.reset() end
   local command = keymap[action]
   if command then command(self.world) end
 end

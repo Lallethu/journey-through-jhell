@@ -18,9 +18,14 @@
 
 ---@alias GameEvent
 ---| "jelly_died"
+---| "jelly_hit"
+---| "jelly_hit_sixseven"
 ---| "player_attacked"
 ---| "player_healed"
+---| "token_gained"
+---| "player_hurt"
 ---| "jelly_spawned"
+---| "sugar_changed"
 ---| "task_done"
 ---| "task_failed"
 ---| "task_refused"
@@ -29,6 +34,7 @@
 ---| "wave_cleared"
 ---| "restart_requested"
 ---| "structure_built"
+---| "entity_hurt"
 ---| "structure_destroyed"
 
 ---@alias TaskId
@@ -89,3 +95,10 @@ local listeners = {}
 ---@field update fun(self: Task, dt: number)
 ---@field draw fun(self: Task)
 ---@field mousepressed fun(self: Task, x: number, y: number, button: integer?)
+
+---@class Swing
+---@field t number
+---@field fx number
+---@field fy number
+---@field hit table<Entity, boolean>
+---@field impact boolean

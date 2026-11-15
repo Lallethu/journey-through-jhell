@@ -8,8 +8,8 @@ Theme: **Jelly**.
 
 ## Play
 
-- Web: [Journey Trough Jhell](https://lallethu.itch.io/journey-trough-jhell)
-- Desktop: download `journey-trough-jhell.love` and run it with LÖVE 11.5
+- Make sure you have LÖVE installed: [LÖVE web site](https://love2d.org)
+- Desktop: download `journey-trough-jhell.love` and run it with LÖVE 11.5 @ [Journey Trough Jhell](https://lallethu.itch.io/journey-trough-jhell)
 
 ## Controls
 
@@ -17,9 +17,12 @@ Theme: **Jelly**.
 | --- | --- | --- |
 | Day | Arrows / WASD | Move |
 | Day | E | Interact |
+| Day | Enter | Skip day time |
+| Day | X | Close current task |
 | Night | Space | Attack |
 | Night | Q | Place wall |
 | Night | F | Heal |
+| Win/Lose | Enter | Restart a run |
 
 ## How to play
 
@@ -41,7 +44,9 @@ Cartoon creature violence only. No mature content.
 ## Credits
 
 - Code, art, design: Lallethu (me, hehe)
-- Framework: by the amazing people at [Love2D](https://love2d.org/), and [Love2D Github](https://github.com/love2d/love)
+- music: L. Alexandre (aka R C), for the title "Candy passion" OST for the game
+
+see also [CREDITS](CREDITS.md)
 
 ## License
 

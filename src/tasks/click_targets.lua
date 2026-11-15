@@ -3,7 +3,7 @@ local Screen = require("src.core.screen")
 
 -- all this might go in a data struct later
 local FADE = 0.2
-local AREA = { x = 40, top = 50, bottom = 60 }
+local AREA = { x = 170, top = 67, bottom = 85 }
 local DIM = { 0, 0, 0, 0.5 }
 local LIVE = { 1.0, 0.85, 0.3 }
 local HIT = { 0.4, 1.0, 0.5 }
@@ -19,6 +19,8 @@ local MISS = { 1.0, 0.35, 0.35 }
 ---@field finished boolean
 local ClickTargets = {}
 ClickTargets.__index = ClickTargets
+
+local font = love.graphics.newFont("assets/fonts/cute-dino.ttf", 14, "mono")
 
 ---@param config table Must be a minigame from data/tasks.lua
 ---@param onFinish fun(success: boolean)
@@ -96,7 +98,7 @@ function ClickTargets:mousepressed(x, y)
 
       if dx * dx + dy * dy <= r2 then
         settle(self, t, "hit")
-        Events.emit("task_target_hit", t.x, t.y)
+        Events.emit("task_target_hit", t.x, t.y, self.hits)
         return
       end
     end
@@ -106,13 +108,14 @@ end
 function ClickTargets:draw()
   local r = self.config.radius
   Screen.fill(DIM)
+  love.graphics.push("all")
+  love.graphics.setFont(font)
 
   for i = 1, #self.targets do
     local t = self.targets[i]
 
     if t.state == "live" then
       local left = 1 - t.age / self.config.lifetime
-
       love.graphics.setColor(LIVE)
       love.graphics.circle("fill", t.x, t.y, r)
       love.graphics.setColor(1, 1, 1, 0.8)
@@ -128,6 +131,7 @@ function ClickTargets:draw()
 
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.printf(self.hits .. " / " .. self.config.need, 0, 38, Screen.width, "center")
+  love.graphics.pop()
 end
 
 return ClickTargets

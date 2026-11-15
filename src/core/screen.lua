@@ -54,7 +54,7 @@ end
 ---@param y number
 ---@return number x , number y
 function Screen.toGameCoordinates(x, y)
-  return (x - offsetX) / scale, (y - offsetY) / 2
+  return (x - offsetX) / scale, (y - offsetY) / scale
 end
 
 return Screen
