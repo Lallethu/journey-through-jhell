@@ -90,6 +90,7 @@ function Jelly:draw()
   love.graphics.setColor((Hittable.isBlinkedOff(self) and { 0.55, 0.55, 0.60, 0.82 })
     or jellydata.COLOR)
   self.anim:draw(self.x, self.y, self.flip, self.size, self.size)
+  love.graphics.setColor(1, 1, 1, 1)
 end
 
 return Jelly
