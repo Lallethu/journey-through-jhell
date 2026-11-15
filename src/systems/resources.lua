@@ -14,14 +14,15 @@ local function onTaskDone(taskId)
   local task = tasksdata[taskId]
   if task.earns then
     world.sugar = world.sugar + task.earns
-    Events.emit("sugar_changed", task.earns, true)
+    Events.emit("sugar_changed", task.earns, true, world.player)
   end
   if task.cost then
     world.sugar = world.sugar - task.cost
-    Events.emit("sugar_changed", task.cost, false)
+    Events.emit("sugar_changed", task.cost, false, world.player)
   end
   if task.gives then
     world.stock[task.gives] = (world.stock[task.gives] or 0) + 1
+    Events.emit("token_gained", task.gives, world.player)
   end
 end
 
@@ -31,7 +32,7 @@ local function onJellyDied(jelly)
       jelly.size
   world.sugar = world.sugar + amount
 
-  Events.emit("sugar_changed", amount, true)
+  Events.emit("sugar_changed", amount, true, world.player)
 end
 
 ---@param p_world World
