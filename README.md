@@ -1,4 +1,4 @@
-# Journey Trough Jhell
+# Journey Through Jhell
 
 > By day, a candy village. By dusk, the world have to face Jhell.
 
@@ -9,7 +9,7 @@ Theme: **Jelly**.
 ## Play
 
 - Make sure you have LÖVE installed: [LÖVE web site](https://love2d.org)
-- Desktop: download `journey-trough-jhell.love` and run it with LÖVE 11.5 @ [Journey Trough Jhell](https://lallethu.itch.io/journey-trough-jhell)
+- Desktop: download `journey-through-jhell.love` and run it with LÖVE 11.5 @ [Journey Through Jhell](https://lallethu.itch.io/journey-through-jhell)
 
 ## Controls
 

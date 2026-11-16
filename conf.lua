@@ -1,11 +1,11 @@
 local love = require("love")
 
 function love.conf(t)
-  t.identity = "journey-trough-jhell"
+  t.identity = "journey-through-jhell"
   t.version = "11.5"
   t.console = false
 
-  t.window.title = "Journey Trough Jhell"
+  t.window.title = "Journey Through Jhell"
   t.window.width = 960
   t.window.height = 540
   t.window.resizable = true

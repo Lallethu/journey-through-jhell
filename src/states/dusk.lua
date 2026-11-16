@@ -6,7 +6,7 @@ local Screen     = require("src.core.screen")
 
 local daytimings = require("src.data.day_timings")
 local palettes   = require("src.data.palettes")
-local background = love.graphics.newImage("assets/gfx/journey-trough-jhell-dusk-map.png")
+local background = love.graphics.newImage("assets/gfx/journey-through-jhell-dusk-map.png")
 background:setFilter("nearest", "nearest")
 
 ---@type State

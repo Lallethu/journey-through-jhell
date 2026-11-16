@@ -20,7 +20,7 @@ local palettes     = require("src.data.palettes")
 local tasks        = require("src.data.tasks")
 
 local sky          = { 1, 1, 1, 1 }
-local background   = love.graphics.newImage("assets/gfx/journey-trough-jhell-day-map.png")
+local background   = love.graphics.newImage("assets/gfx/journey-through-jhell-day-map.png")
 background:setFilter("nearest", "nearest")
 
 ---@type State

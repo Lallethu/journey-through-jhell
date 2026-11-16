@@ -15,7 +15,7 @@ local WaveSpawner = require("src.systems.wave_spawner")
 
 local palettes    = require("src.data.palettes")
 local wavesdata   = require("src.data.waves")
-local background  = love.graphics.newImage("assets/gfx/journey-trough-jhell-night-map.png")
+local background  = love.graphics.newImage("assets/gfx/journey-through-jhell-night-map.png")
 background:setFilter("nearest", "nearest")
 local foreground = love.graphics.newImage("assets/gfx/foreground-jelly-night.png")
 foreground:setFilter("nearest", "nearest")
