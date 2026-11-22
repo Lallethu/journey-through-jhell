@@ -43,8 +43,10 @@ local function findNpc(taskId)
   local list = world.entities
   for i = 1, #list do
     local e = list[i] --[[@as Interactable]]
-    e:refresh()
-    if e.kind == "interactable" and e.taskId == taskId then return e end
+    if e.kind == "interactable" and e.taskId == taskId then
+      e:refresh()
+      return e
+    end
   end
 end
 
