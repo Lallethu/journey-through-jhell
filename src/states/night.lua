@@ -30,6 +30,7 @@ local keymap     = {
 local NightState = {}
 
 function NightState:enter()
+  self.age = 0
   WaveSpawner.start(self.world, self.world.night)
   Events.on("wave_cleared", function()
     if self.world.night >= #wavesdata.NIGHTS then
@@ -47,6 +48,7 @@ function NightState:exit()
 end
 
 function NightState:update(dt)
+  self.age = self.age + dt
   self.world:update(dt)
   Commands.replayBuffered(self.world)
   Collision.resolve(dt, self.world)
@@ -65,7 +67,7 @@ function NightState:draw()
   self.world:draw(background)
   love.graphics.draw(foreground)
   FX.draw()
-  HUD.drawNight(self.world)
+  HUD.drawNight(self.world, self.age)
 end
 
 function NightState:onAction(action)

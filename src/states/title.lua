@@ -1,4 +1,5 @@
 local Events = require("src.core.events")
+local Fonts = require("src.core.fonts")
 local Screen = require("src.core.screen")
 local Util = require("src.core.util")
 
@@ -24,7 +25,7 @@ for i = 1, 12 do IGNORED_KEYS["f" .. i] = true end
 local TitleScreenState = {}
 
 function TitleScreenState:enter()
-  font = font or love.graphics.newFont("assets/fonts/cute-dino.ttf", 14, "mono")
+  font = font or Fonts.get(14)
 
   self.t = 0
   self.leaving = nil

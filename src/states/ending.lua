@@ -2,6 +2,8 @@
 local Animator            = require("src.core.animator")
 ---@type Events
 local Events              = require("src.core.events")
+---@type Fonts
+local Fonts               = require("src.core.fonts")
 ---@type FX
 local FX                  = require("src.systems.fx")
 ---@type Screen
@@ -26,8 +28,8 @@ local EndingState         = {}
 
 ---@param won boolean?
 function EndingState:enter(won)
-  titleFont = titleFont or love.graphics.newFont("assets/fonts/cute-dino.ttf", 22, "mono")
-  bodyFont  = bodyFont or love.graphics.newFont("assets/fonts/cute-dino.ttf", 14, "mono")
+  titleFont = Fonts.get(22)
+  bodyFont  = Fonts.get(14)
 
   self.won  = won
   if not won and self.world.night == 6 then

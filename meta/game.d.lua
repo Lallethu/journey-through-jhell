@@ -27,6 +27,8 @@
 ---| "jelly_spawned"
 ---| "sugar_changed"
 ---| "task_done"
+---| "task_started"
+---| "task_cancelled"
 ---| "task_failed"
 ---| "task_refused"
 ---| "task_target_hit"
@@ -69,6 +71,7 @@ local listeners = {}
 ---@field t number? Time variable to use as hearth content
 ---@field leaving number? Use case in TitleScreenState (timer)
 ---@field timeLeft number? Time between transitions
+---@field age number? Time the state has been alive for
 ---@field won boolean? Flag for win/lose
 ---@field enter fun(self: State, ...: any)? Trigger when StateMachine:switch is called
 ---@field exit fun(self: State)? Trigger when StateMachine:switch is called

@@ -10,7 +10,9 @@ local Interactable    = require("src.world.interactable")
 local Events          = require("src.core.events")
 local HUD             = require("src.ui.hud")
 local FX              = require("src.systems.fx")
--- local Profiler     = require("src.core.profiler")
+local Banner          = require("src.ui.banner")
+local Guide           = require("src.systems.guide")
+local Profiler        = require("src.core.profiler")
 
 ---@type StateMachine
 local stateMachine
@@ -29,6 +31,7 @@ local function newRun(first)
   world:add(Interactable.new("gatherer", 240, 128))
 
   AudioSystem.init { world = world }
+  Guide.init { world = world }
   SplittingSystem.init(world)
   ResourcesSystem.init(world)
   FX.init()
@@ -50,31 +53,32 @@ function Game.load()
   Screen.init()
   AudioSystem.load()
   HUD.init()
+  Banner.init()
   Events.on("restart_requested", function() newRun(false) end, Game)
   newRun(true)
 end
 
 function Game.update(dt)
-  -- Profiler.beginFrame(dt)
+  Profiler.beginFrame(dt)
 
   dt = math.min(dt, 1 / 20) -- cheeky way of capping dt compounding to insane values and break movement/timer/ect...
-  -- Profiler.beginSection("Game Update")
+  Profiler.beginSection("Game Update")
   stateMachine:update(dt)
-  -- Profiler.endSection("Game Update")
+  Profiler.endSection("Game Update")
 
-  -- Profiler.beginSection("audio")
+  Profiler.beginSection("audio")
   AudioSystem.update(dt)
-  -- Profiler.endSection("audio")
+  Profiler.endSection("audio")
 end
 
 function Game.draw()
-  -- Profiler.beginSection("Game Draw")
+  Profiler.beginSection("Game Draw")
   Screen.begin()
   stateMachine:draw()
   Screen.finish()
-  -- Profiler.endSection("Game Draw")
+  Profiler.endSection("Game Draw")
 
-  -- Profiler.draw()
+  Profiler.draw()
 end
 
 ---@param k love.KeyConstant
