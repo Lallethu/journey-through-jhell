@@ -1,13 +1,14 @@
-local Events = require("src.core.events")
-local Screen = require("src.core.screen")
+local Events         = require("src.core.events")
+local Fonts          = require("src.core.fonts")
+local Screen         = require("src.core.screen")
 
 -- all this might go in a data struct later
-local FADE = 0.2
-local AREA = { x = 170, top = 67, bottom = 85 }
-local DIM = { 0, 0, 0, 0.5 }
-local LIVE = { 1.0, 0.85, 0.3 }
-local HIT = { 0.4, 1.0, 0.5 }
-local MISS = { 1.0, 0.35, 0.35 }
+local FADE           = 0.2
+local AREA           = { x = 170, top = 67, bottom = 85 }
+local DIM            = { 0, 0, 0, 0.5 }
+local LIVE           = { 1.0, 0.85, 0.3 }
+local HIT            = { 0.4, 1.0, 0.5 }
+local MISS           = { 1.0, 0.35, 0.35 }
 
 ---@class ClickTargets : Task
 ---@field config table
@@ -17,10 +18,10 @@ local MISS = { 1.0, 0.35, 0.35 }
 ---@field hits integer
 ---@field timer number
 ---@field finished boolean
-local ClickTargets = {}
+local ClickTargets   = {}
 ClickTargets.__index = ClickTargets
 
-local font = love.graphics.newFont("assets/fonts/cute-dino.ttf", 14, "mono")
+local font           = Fonts.get(14)
 
 ---@param config table Must be a minigame from data/tasks.lua
 ---@param onFinish fun(success: boolean)

@@ -1,4 +1,5 @@
 local Events  = require("src.core.events")
+local Fonts   = require("src.core.fonts")
 local Util    = require("src.core.util")
 
 local LIFE    = 0.9
@@ -24,7 +25,7 @@ function FX.float(text, x, y, color)
 end
 
 function FX.init()
-  font = font or love.graphics.newFont("assets/fonts/cute-dino.ttf", 10, "mono")
+  font = font or Fonts.get(10)
   floats = {}
   Events.off_owner(FX)
   Events.on("player_healed", function(amount, x, y)
