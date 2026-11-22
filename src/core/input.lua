@@ -1,6 +1,22 @@
 local bindings = require("src.data.bindings")
 local unpack = table.unpack or unpack
 
+local NAMES = {
+  space = "Space",
+  ["return"] = "Enter",
+  tab = "Tab",
+  escape = "Esc",
+  up = "Up",
+  down = "Down",
+  left = "Left",
+  right = "Right",
+  lshift = "Shift",
+  rshift = "Shift",
+  backspace = "Bksp"
+}
+
+local labels = {}
+
 ---@class Input
 local Input = {}
 
@@ -13,6 +29,29 @@ for action, scancodes in pairs(bindings) do
       "scancode ['" .. scancode .. "'] is bound to two actions")
     actionByScancode[scancode] = action
   end
+end
+
+---Name of the first key bound to an action, as printed on the player's keycap.
+---@param action Binding
+---@return string
+function Input.label(action)
+  local cached = labels[action]
+  if cached then return cached end
+
+  local list = assert(bindings[action], "unknown action: " .. tostring(action))
+  local key = love.keyboard.getKeyFromScancode(list[1]) --[[@as love.Scancode]]
+
+  if key == "unknown" then key = list[1] end
+  cached = NAMES[key] or key:upper()
+  labels[action] = cached
+  return cached
+end
+
+---For example "WASD", or "ZQSD" on an AZERTY keyboard.
+---@return string
+function Input.moveLabel()
+  return Input.label("move_up") .. Input.label("move_left")
+      .. Input.label("move_down") .. Input.label("move_right")
 end
 
 ---Checks if a key is held this frame
