@@ -10,7 +10,8 @@ local world
 local Resources = {}
 
 ---@param taskId TaskId
-local function onTaskDone(taskId)
+---@param taskResults TaskResult
+local function onTaskDone(taskId, taskResults)
   local task = tasksdata[taskId]
   if task.earns then
     world.sugar = world.sugar + task.earns

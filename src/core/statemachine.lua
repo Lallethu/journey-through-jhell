@@ -59,4 +59,16 @@ function StateMachine:mousepressed(x, y, button)
   end
 end
 
+function StateMachine:mousereleased(x, y, button)
+  if self.current and self.current.mousereleased then self.current:mousereleased(x, y, button) end
+end
+
+function StateMachine:wheelmoved(dx, dy)
+  if self.current and self.current.wheelmoved then self.current:wheelmoved(dx, dy) end
+end
+
+function StateMachine:focus(focused)
+  if self.current and self.current.focus then self.current:focus(focused) end
+end
+
 return StateMachine

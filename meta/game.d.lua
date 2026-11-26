@@ -55,7 +55,7 @@
 ---| "structure"
 
 ---@alias Bindings table<Binding, love.Scancode[]>
----@alias Tasks table<TaskId, table>
+---@alias TasksList table<TaskId, table>
 
 ---@alias EventHandler fun(...: any)
 
@@ -76,12 +76,16 @@ local listeners = {}
 ---@field enter fun(self: State, ...: any)? Trigger when StateMachine:switch is called
 ---@field exit fun(self: State)? Trigger when StateMachine:switch is called
 ---@field update fun(self: State, dt: number)?
+---@field closeTask fun(self: State)?
 ---@field draw fun(self: State)?
 ---@field startTask fun(self: State, target: Interactable)?
 ---@field onAction fun(self: State, action: Binding)?
 ---@field start fun(self: State)?
 ---@field keypressed fun(self: State, k: love.KeyConstant, sc: love.Scancode)?
 ---@field mousepressed fun(self: State, x: number, y: number, button: integer?)?
+---@field mousereleased fun(self: State, x: number, y: number, button: integer?)?
+---@field wheelmoved fun(self: State, dx: integer, dy: integer)?
+---@field focus fun(self: State, focused: boolean)?
 
 ---@alias StateList table<string, State>
 
@@ -99,9 +103,25 @@ local listeners = {}
 ---@field draw fun(self: Entity)
 
 ---@class Task
+---@field panel boolean Either there is a panel UI element showing or not
 ---@field update fun(self: Task, dt: number)
 ---@field draw fun(self: Task)
 ---@field mousepressed fun(self: Task, x: number, y: number, button: integer?)
+---@field brush fun(self: Task)?
+---@field saw fun(self: Task)?
+---@field refreshLabels fun(self: Task)?
+---@field slotAt fun(self: Task)?
+---@field cycleSize fun(self: Task)?
+---@field complete fun(self: Task)?
+---@field mousepressed fun(self: Task, x: number, y: number, button: integer)?
+---@field mousereleased fun(self: Task, x: number, y: number, button: integer)?
+---@field wheelmoved fun(self: Task, dx: integer, dy, integer)?
+---@field blur fun(self: Task)?
+---@field close fun(self: Task)?
+
+---@class TaskResult
+---@field success boolean
+---@field quality number 0..1, 1 = perfect
 
 ---@class Swing
 ---@field t number

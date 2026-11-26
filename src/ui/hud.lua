@@ -1,10 +1,7 @@
-local Fonts  = require("src.core.fonts")
-local Input  = require("src.core.input")
-local Util   = require("src.core.util")
-local Screen = require("src.core.screen")
-
-
-
+local Fonts                       = require("src.core.fonts")
+local Input                       = require("src.core.input")
+local Util                        = require("src.core.util")
+local Screen                      = require("src.core.screen")
 
 local bindings                    = require("src.data.bindings")
 local controldata                 = require("src.data.controls")
@@ -16,6 +13,7 @@ local daytimings                  = require("src.data.day_timings")
 local MARGIN                      = 6
 local SIZE_NAMES                  = { "small", "medium", "big" }
 local KEY_COLOR, LABEL_COLOR      = { 0.92, 0.92, 0.97 }, { 0.72, 0.72, 0.8 }
+local LITERAL                     = { click = "Click", wheel = "Wheel" }
 
 local WHITE                       = { 1, 1, 1, 1 }
 local GREY                        = { 0.77, 0.77, 0.77, 1 }
@@ -59,8 +57,9 @@ local function buildControls()
     local row, width = {}, 0
     for i, item in ipairs(items) do
       local action = item[1] --[[@as Binding]]
-      local key = (action == "move" and Input.moveLabel())
-          or (action == "click" and "Click")
+      local key =
+          (action == "move" and Input.moveLabel())
+          or LITERAL[action]
           or Input.label(action)
       local label = " " .. item[2]
       local keyW = font:getWidth(key)
@@ -75,6 +74,8 @@ end
 
 local function controls(phase, age, world)
   local row = rows[phase]
+  assert(row, "HUD: no controls row named '" .. tostring(phase) .. "'")
+
   local fade = Util.clamp((age - controldata.FADE_START) / controldata.FADE_TIME, 0, 1)
   local alpha = Util.lerp(controldata.ALPHA_HIGH, controldata.ALPHA_LOW, fade)
   local x = math.floor((Screen.width - row.width) / 2)
@@ -196,21 +197,24 @@ end
 
 ---@param world World
 ---@param timeLeft number
----@param busy boolean
-function HUD.drawDay(world, timeLeft, busy, age)
+---@param age number
+---@param task? table the active task
+function HUD.drawDay(world, timeLeft, age, task)
   love.graphics.push("all")
   love.graphics.setFont(font)
-  status(world)
-
-  local title = "Night " .. world.night .. "/" .. #wavesdata.NIGHTS
-  local info = forecast(world.night)
-  text(title, Screen.width - MARGIN - font:getWidth(title), MARGIN)
-  text(info, Screen.width - MARGIN - font:getWidth(info), MARGIN + 12, GREY)
-
-  if not busy then hint(world) end
-  counter(world)
   timer(timeLeft)
-  controls(busy and "task" or "day", busy and 0 or age, world)
+  if task and task.panel then
+    controls(task.controls, 0, world)
+  else
+    status(world)
+    local title = "Night " .. world.night .. "/" .. #wavesdata.NIGHTS
+    local info = forecast(world.night)
+    text(title, Screen.width - MARGIN - font:getWidth(title), MARGIN)
+    text(info, Screen.width - MARGIN - font:getWidth(info), MARGIN + 12, GREY)
+    if not task then hint(world) end
+    counter(world)
+    controls(task and task.controls or "day", task and 0 or age, world)
+  end
   love.graphics.pop()
 end
 
