@@ -15,12 +15,11 @@ local structuresdata = require("src.data.structures")
 ---@field tool "paint"|"saw"
 ---@field brushIndex integer
 ---@field sawIndex integer
----@field held boolean  mouse button 1 is down on the work area
+---@field held boolean
 ---@field phase "working"|"done"
 local Task = {}
 Task.__index = Task
 
--- read by DayState and the HUD
 Task.controls = "candy_cane"
 Task.panel = true
 
