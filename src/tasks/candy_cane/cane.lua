@@ -41,15 +41,14 @@ function Cane.new(cfg, stripeCount)
   assert(bottom <= h, "Cane.new: GRID_H is too small for the shaft")
 
   local sweep = math.rad(cfg.HOOK_SWEEP)
-  local tipTheta = math.pi - sweep -- where the hook ends (y up)
+  -- where the hook ends (y up)
+  local tipTheta = math.pi - sweep
   local tipX, tipY = arcCenterX + hookRaduis * math.cos(tipTheta),
       arcCenterY - hookRaduis * math.sin(tipTheta)
 
   local cutRow = math.floor(arcCenterY + cfg.CUT_BELOW + 0.5)
   local wallCols = math.floor(shaftX + half + 0.5)
 
-  -- For a point: is it on the cane, how far along the cane (from the bottom
-  -- of the shaft, up and around the hook), and how far to the outer side.
   local function sample(px, py)
     if py >= arcCenterY and py <= bottom and math.abs(px - shaftX) <= half then
       return true, bottom - py, shaftX - px
