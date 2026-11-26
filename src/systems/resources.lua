@@ -22,8 +22,9 @@ local function onTaskDone(taskId, taskResults)
     Events.emit("sugar_changed", task.cost, false, world.player)
   end
   if task.gives then
-    world.stock[task.gives] = (world.stock[task.gives] or 0) + 1
-    Events.emit("token_gained", task.gives, world.player)
+    local rewardWalls = ((world.stock[task.gives] or 0) + 1 + (taskResults.quality >= 0.5 and 1 or 0))
+    world.stock[task.gives] = rewardWalls
+    Events.emit("token_gained", task.gives, rewardWalls, world.player)
   end
 end
 
