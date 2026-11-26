@@ -64,11 +64,12 @@ local function stepIndex(id)
   end
 end
 
-local function onEvent(name)
+local function onEvent(name, taskId)
   if not running then return end
   local step = guidedata.STEPS[index]
   if not step then return end
   if step.wait == name then
+    if name == "task_started" and step.point and taskId ~= step.point then return end
     goTo(index + 1)
   elseif step.onFail and (name == "task_failed" or name == "task_cancelled") then
     goTo(assert(stepIndex(step.onFail), step.onFail),
@@ -84,9 +85,7 @@ function Guide.init(ctx)
   running = false
   Events.off_owner(Guide)
   for _, name in ipairs({ "task_started", "task_done", "task_failed", "task_cancelled" }) do
-    Events.on(
-      name --[[@as GameEvent]],
-      function() onEvent(name) end, Guide)
+    Events.on(name --[[@as GameEvent]], function(...) onEvent(name, ...) end, Guide)
   end
 end
 

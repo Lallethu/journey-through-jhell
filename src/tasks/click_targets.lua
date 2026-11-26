@@ -12,7 +12,7 @@ local MISS           = { 1.0, 0.35, 0.35 }
 
 ---@class ClickTargets : Task
 ---@field config table
----@field onFinish fun(success: boolean)
+---@field onFinish fun(result: TaskResult)
 ---@field targets table[]
 ---@field spawned integer
 ---@field hits integer
@@ -24,7 +24,7 @@ ClickTargets.__index = ClickTargets
 local font           = Fonts.get(14)
 
 ---@param config table Must be a minigame from data/tasks.lua
----@param onFinish fun(success: boolean)
+---@param onFinish fun(result: TaskResult)
 ---@return ClickTargets
 function ClickTargets.new(config, onFinish)
   assert(config, "has no minigame config")
@@ -82,13 +82,14 @@ function ClickTargets:update(dt)
 
   if not self.finished and self.spawned == c.count and #self.targets == 0 then
     self.finished = true
-    self.onFinish(self.hits >= c.need)
+    self.onFinish({ success = self.hits >= c.need, quality = 1 })
   end
 end
 
 ---@param x number Canvas coordinates
 ---@param y number
-function ClickTargets:mousepressed(x, y)
+function ClickTargets:mousepressed(x, y, button)
+  if button ~= 1 then return end
   local r2 = self.config.radius * self.config.radius
 
   for i = #self.targets, 1, -1 do

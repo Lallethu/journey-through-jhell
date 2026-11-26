@@ -13,6 +13,10 @@ function love.keypressed(k, sc) Game.keypressed(k, sc) end
 
 function love.mousepressed(x, y, button) Game.mousepressed(x, y, button) end
 
+function love.mousereleased(x, y, button) Game.mousereleased(x, y, button) end
+
+function love.wheelmoved(dx, dy) Game.wheelmoved(dx, dy) end
+
 function love.resize(w, h) Game.resize(w, h) end
 
-function love.focus(f) love.audio.setVolume(f and 1 or 0) end
+function love.focus(f) Game.focus(f) end

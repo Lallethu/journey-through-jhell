@@ -6,13 +6,12 @@ local controldata = {
   ALPHA_HIGH = 0.85,
   ALPHA_LOW = 0.46,
   ROWS = {
-    day = {
+    day        = {
       { "move", "move" }, { "interact", "interact" }, { "end_day", "end day" }
     },
-    task = {
-      { "click", "click the circles" }, { "cancel", "cancel" }
-    },
-    night = {
+    click      = { { "click", "click the circles" }, { "cancel", "cancel" } },
+    candy_cane = { { "click", "pick tool" }, { "wheel", "size" }, { "cancel", "cancel" } },
+    night      = {
       { "attack", "swing" }, { "heal", "heal", "heal" }, { "place_wall", "wall", "wall" }
     }
   }
