@@ -25,7 +25,6 @@ local function newRun(first)
   local world = World.new()
   world.player = world:add(Player.new(Screen.width / 2, Screen.height / 2)) --[[@as Player]]
 
-
   world:add(Interactable.new("wall", 72, 200))
   world:add(Interactable.new("healer", 408, 220, true))
   world:add(Interactable.new("gatherer", 240, 128))
@@ -90,6 +89,8 @@ function Game.keypressed(k, sc)
   local action = Input.keypressed(k, sc)
   if action == "toggle_fullscreen" then
     love.window.setFullscreen(not love.window.getFullscreen(), "desktop")
+  elseif action == "debug_profiler" then
+    Profiler.toggle()
   end
   if action then stateMachine:onAction(action) end
 end
@@ -104,6 +105,22 @@ function Game.mousepressed(x, y, button)
   stateMachine:mousepressed(gx, gy, button)
 end
 
+function Game.mousereleased(x, y, button)
+  local gx, gy = Screen.toGameCoordinates(x, y)
+  stateMachine:mousereleased(gx, gy, button)
+end
+
+function Game.wheelmoved(dx, dy)
+  stateMachine:wheelmoved(dx, dy)
+end
+
 function Game.resize(w, h) Screen.resize(w, h) end
+
+---Callback when the window focus changes (minimize, click on another window)
+---@param focused boolean
+function Game.focus(focused)
+  love.audio.setVolume(focused and 1 or 0)
+  stateMachine:focus(focused)
+end
 
 return Game
