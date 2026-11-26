@@ -1,31 +1,31 @@
 ---@type Banner
-local Banner       = require("src.ui.banner")
+local Banner     = require("src.ui.banner")
 ---@type Collision
-local Collision    = require("src.systems.collision")
----@type ClickTargets
-local ClickTargets = require("src.tasks.click_targets")
+local Collision  = require("src.systems.collision")
 ---@type Commands
-local Commands     = require("src.commands.player")
+local Commands   = require("src.commands.player")
 ---@type Events
-local Events       = require("src.core.events")
+local Events     = require("src.core.events")
 ---@type FX
-local FX           = require("src.systems.fx")
+local FX         = require("src.systems.fx")
 ---@type Guide
-local Guide        = require("src.systems.guide")
+local Guide      = require("src.systems.guide")
 ---@type HUD
-local HUD          = require("src.ui.hud")
+local HUD        = require("src.ui.hud")
 ---@type Screen
-local Screen       = require("src.core.screen")
-local Util         = require("src.core.util")
-local Profiler     = require("src.core.profiler")
+local Screen     = require("src.core.screen")
+---@type Tasks
+local Tasks      = require("src.tasks")
+local Util       = require("src.core.util")
+local Profiler   = require("src.core.profiler")
 
-local guidedata    = require("src.data.guide")
-local daytimings   = require("src.data.day_timings")
-local palettes     = require("src.data.palettes")
-local tasks        = require("src.data.tasks")
+local guidedata  = require("src.data.guide")
+local daytimings = require("src.data.day_timings")
+local palettes   = require("src.data.palettes")
+local taskdata   = require("src.data.tasks")
 
-local sky          = { 1, 1, 1, 1 }
-local background   = love.graphics.newImage("assets/gfx/journey-through-jhell-day-map.png")
+local sky        = { 1, 1, 1, 1 }
+local background = love.graphics.newImage("assets/gfx/journey-through-jhell-day-map.png")
 background:setFilter("nearest", "nearest")
 
 ---@type State
@@ -33,7 +33,7 @@ local DayState = {}
 
 function DayState:enter()
   self.age = 0
-  self.activeTask = nil
+  self:closeTask()
   self.timeLeft = daytimings.DAY_LENGTH
   self.world:eachOfKind("interactable",
     ---@param e Interactable
@@ -46,22 +46,29 @@ function DayState:enter()
 end
 
 function DayState:exit()
-  self.activeTask = nil
+  self:closeTask()
   Guide.stop()
 end
 
 ---@param target Interactable
 function DayState:startTask(target)
-  local config = tasks[target.taskId].minigame
-  Events.emit("task_started", target.taskId)
-  self.activeTask = ClickTargets.new(config, function(success)
-    self.activeTask = nil
-    if success and target:tryUse() then
-      Events.emit("task_done", target.taskId)
+  local def = taskdata[target.taskId]
+  local task = Tasks.create(def.minigame, function(result)
+    self:closeTask()
+    if result.success and target:tryUse() then
+      Events.emit("task_done", target.taskId, result)
     else
       Events.emit("task_failed", target.taskId)
     end
   end)
+  self.activeTask = task
+  Events.emit("task_started", target.taskId)
+end
+
+function DayState:closeTask()
+  local task = self.activeTask --[[@as Task]]
+  self.activeTask = nil
+  if task and task.close then task:close() end
 end
 
 function DayState:update(dt)
@@ -80,21 +87,25 @@ function DayState:update(dt)
 end
 
 function DayState:draw()
+  local task = self.activeTask
   local k = Util.clamp(1 - self.timeLeft / daytimings.WARNING_TIME, 0, 1)
   Screen.fill(Util.mixColor(palettes.DAY, palettes.DUSK, k, sky))
   self.world:draw(background)
-  if self.activeTask then self.activeTask:draw() end
+  if task then task:draw() end
   FX.draw()
-  HUD.drawDay(self.world, self.timeLeft, self.activeTask ~= nil, self.age)
-  Guide.draw()
-  Banner.draw()
+  HUD.drawDay(self.world, self.timeLeft, self.age, task)
+
+  if not (task and task.panel) then
+    Guide.draw()
+    Banner.draw()
+  end
 end
 
 function DayState:onAction(action)
   if self.activeTask then
     if action == "cancel" then
       Events.emit("task_cancelled")
-      self.activeTask = nil
+      self:closeTask()
     end
     return
   end
@@ -114,7 +125,22 @@ end
 ---@param y number
 ---@param button integer
 function DayState:mousepressed(x, y, button)
-  if self.activeTask and button == 1 then self.activeTask:mousepressed(x, y) end
+  if self.activeTask and button == 1 then self.activeTask:mousepressed(x, y, button) end
+end
+
+function DayState:mousereleased(x, y, button)
+  if self.activeTask and self.activeTask.mousereleased then
+    self.activeTask:mousereleased(x, y,
+      button)
+  end
+end
+
+function DayState:wheelmoved(dx, dy)
+  if self.activeTask and self.activeTask.wheelmoved then self.activeTask:wheelmoved(dx, dy) end
+end
+
+function DayState:focus(focused)
+  if self.activeTask and not focused and self.activeTask.blur then self.activeTask:blur() end
 end
 
 return DayState
