@@ -35,8 +35,8 @@ function FX.init()
     FX.float((additive and "+" or "-") .. amount .. " sugar", player.x, player.y,
       additive and GREEN or RED)
   end)
-  Events.on("token_gained", function(tokenKind, player)
-    FX.float("+1 " .. tokenKind .. " token", player.x, player.y + 16,
+  Events.on("token_gained", function(tokenKind, amount, player)
+    FX.float("+" .. amount .. " " .. tokenKind .. " token", player.x, player.y + 16,
       GREEN)
   end)
   Events.on("entity_hurt", function(what, howMuch)
